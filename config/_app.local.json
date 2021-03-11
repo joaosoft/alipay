@@ -1,0 +1,7 @@
+{
+  "alipay": {
+    "host": "http://localhost:3000",
+    "public_api_key": "pk_test_<KEY>",
+    "secret_api_key": "sk_test_<KEY>"
+  }
+}

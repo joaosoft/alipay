@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <title>Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="checkout.js"></script>
+    <script>
+      var stripe = Stripe("{{ .PublicApiKey }}");
+    </script>
+</head>
+<body>
+  <label>Client: <input type="text" id="client" name="Client"/></label>
+  <label>Amount (CNY): <input type="number" id="amount" name="Amount"/></label>
+  <button onclick="checkout()">Checkout</button>
+  <label id="messages"></label>
+</body>
+</html>
