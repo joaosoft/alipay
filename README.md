@@ -14,7 +14,11 @@ A simple client for stripe api to receive money from alipay.
 * Create 
 * Confirm
 
-###### If i miss something or you have something interesting, please be part of this project. Let me know! My contact is at the end.
+## Setup
+Copy default configs
+```
+make setup
+```
 
 ## Dependency Management
 >### Dep
@@ -29,9 +33,6 @@ Project dependencies are managed using Dep. Read more about [Dep](https://github
 go get github.com/joaosoft/alipay
 ```
 
-## Usage 
-This examples are available in the project at [alipay/examples](https://github.com/joaosoft/alipay/tree/master/examples)
-
 ### Code
 ```go
 import (
@@ -39,10 +40,16 @@ import (
 )
 
 func main() {
-    if err := globals.AliPayInstance.Start(); err != nil {
+    ap, err := alipay.NewAliPay()
+    if err != nil {
+        panic(err)
+    }
+    
+    if err = ap.Start(); err != nil {
         panic(err)
     }
 }
+
 ```
 
 ## Known issues
