@@ -20,8 +20,8 @@ func GetPaymentMethod(paymentMethodID string) error {
 
 func CreatePaymentIntent(cus *stripe.Customer, amount int64) (*stripe.PaymentIntent, error) {
 	params := &stripe.PaymentIntentParams{
-		Amount:   stripe.Int64(amount*100),
-		Currency: stripe.String(string(stripe.CurrencyCNY)),
+		Amount:   stripe.Int64(amount * 100),
+		Currency: stripe.String(string(stripe.CurrencyEUR)),
 		PaymentMethodTypes: []*string{
 			stripe.String(aliPayType),
 		},
