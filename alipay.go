@@ -36,7 +36,7 @@ func NewAliPay(options ...AliPayOption) (*AliPay, error) {
 	config, _, err := NewConfig()
 
 	service := &AliPay{
-		logger: logger.NewLogDefault("auth", logger.WarnLevel),
+		logger: logger.NewLogDefault("alipay", logger.WarnLevel),
 		config: config.AliPay,
 	}
 
