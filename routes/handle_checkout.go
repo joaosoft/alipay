@@ -15,7 +15,7 @@ func handleCheckout(publicApiKey string) func(w http.ResponseWriter, r *http.Req
 			PublicApiKey: publicApiKey,
 		}
 
-		if err := checkoutTmpl.Execute(w, data); err != nil {
+		if err := checkoutView.Execute(w, data); err != nil {
 			handleError(err, w)
 			return
 		}

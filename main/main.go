@@ -1,6 +1,8 @@
 package main
 
-import "alipay"
+import (
+	"alipay"
+)
 
 func main() {
 	ap, err := alipay.NewAliPay()

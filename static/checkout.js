@@ -9,12 +9,12 @@ function checkout() {
     then(function (response) {
         return response.json();
     }).then(function (responseJson) {
-        var clientSecret = responseJson.client_secret;
         // set the clientSecret here you got in previous step
-        stripe.confirmAlipayPayment(clientSecret, {
+        stripe.confirmAlipayPayment(responseJson.client_secret, {
             // return URL where the customer should be redirected to after payment
             return_url: `${window.location.href}`,
         }).then((result) => {
+            console.log(result)
             var messages = document.getElementById('messages');
             if (result.error) {
                 messages.innerHTML = result.error.message;

@@ -10,10 +10,10 @@ import (
 )
 
 func (ap *AliPay) Start() error {
-	routes.InitializeRouters(ap.config.PublicApiKey)
+	routes.InitializeRouters(ap.config.PublicApiKey, ap.config.SecretApiKey, ap.config.ReturnUrl)
 
 	url := fmt.Sprintf("%s/checkout", ap.config.Host)
-	fmt.Printf("\n:: waiting for feedback at %s", url)
+	ap.logger.Infof(":: waiting for feedback at %s", url)
 
 	var err error
 	if err = showUrl(url); err != nil {

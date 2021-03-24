@@ -7,9 +7,52 @@ import (
 	"github.com/stripe/stripe-go/paymentmethod"
 )
 
-func CreateCustomer(name string) (*stripe.Customer, error) {
+func FindCustomer(secretApiKey, email string) (*stripe.Customer, error) {
+	stripe.Key = secretApiKey
+
+	params := &stripe.CustomerListParams{
+		Email: stripe.String(email),
+	}
+
+	iter := customer.List(params)
+	if iter.Next() {
+		if err := iter.Err(); err != nil {
+			return nil, err
+		}
+		return iter.Customer(), nil
+	}
+	return nil, nil
+}
+
+func CreateCustomer(secretApiKey string, c *Customer) (*stripe.Customer, error) {
+	stripe.Key = secretApiKey
+
+	foundCustomer, err := FindCustomer(secretApiKey, *c.Email)
+	if err == nil && foundCustomer != nil {
+		var updCustomer *stripe.Customer
+		updCustomer, err = UpdateCustomer(secretApiKey, foundCustomer.ID, c)
+		if err != nil {
+			return nil, err
+		}
+		return updCustomer, err
+	}
+
+	var address *stripe.AddressParams
+	if c.Address != nil {
+		address = &stripe.AddressParams{
+			City:       c.Address.City,
+			Country:    c.Address.Country,
+			Line1:      c.Address.Line1,
+			Line2:      c.Address.Line2,
+			PostalCode: c.Address.PostalCode,
+			State:      c.Address.State,
+		}
+	}
+
 	params := &stripe.CustomerParams{
-		Name: stripe.String(name),
+		Name:    c.Name,
+		Email:   c.Email,
+		Address: address,
 	}
 
 	cus, err := customer.New(params)
@@ -22,10 +65,12 @@ func CreateCustomer(name string) (*stripe.Customer, error) {
 	return cus, nil
 }
 
-func GetCustomerPaymentMethods(cus *stripe.Customer) error {
+func GetCustomerPaymentMethods(secretApiKey string, cus *stripe.Customer) error {
+	stripe.Key = secretApiKey
+
 	params := &stripe.PaymentMethodListParams{
 		Customer: stripe.String(cus.ID),
-		Type:     stripe.String(aliPayType),
+		Type:     stripe.String(AliPayType),
 	}
 
 	pmList := paymentmethod.List(params)
@@ -43,6 +88,36 @@ func GetCustomerPaymentMethods(cus *stripe.Customer) error {
 	}
 
 	return nil
+}
+
+func UpdateCustomer(secretApiKey, id string, c *Customer) (*stripe.Customer, error) {
+	stripe.Key = secretApiKey
+	var address *stripe.AddressParams
+	if c.Address != nil {
+		address = &stripe.AddressParams{
+			City:       c.Address.City,
+			Country:    c.Address.Country,
+			Line1:      c.Address.Line1,
+			Line2:      c.Address.Line2,
+			PostalCode: c.Address.PostalCode,
+			State:      c.Address.State,
+		}
+	}
+
+	params := &stripe.CustomerParams{
+		Name:    c.Name,
+		Email:   c.Email,
+		Address: address,
+	}
+
+	cus, err := customer.Update(id, params)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Printf("\n:: customer {id: %s}", cus.ID)
+
+	return cus, nil
 }
 
 func AddCustomerPaymentMethod(cus *stripe.Customer, paymentMethodID string) error {
