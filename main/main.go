@@ -1,7 +1,7 @@
 package main
 
 import (
-	"alipay"
+	"github.com/joaosoft/alipay"
 )
 
 func main() {
