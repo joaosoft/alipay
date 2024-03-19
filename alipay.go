@@ -1,8 +1,8 @@
 package alipay
 
 import (
-	"alipay/routes"
 	"fmt"
+	"github.com/joaosoft/alipay/routes"
 	"github.com/joaosoft/logger"
 	"github.com/stripe/stripe-go"
 	"net/http"

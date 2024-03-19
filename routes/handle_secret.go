@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"alipay/models"
 	"encoding/json"
+	"github.com/joaosoft/alipay/models"
 	"github.com/stripe/stripe-go"
 	"net/http"
 	"strconv"
@@ -56,7 +56,7 @@ func handleSecret(publicApiKey, secretApiKey, returnUrl string) func(w http.Resp
 			data = struct {
 				Url string `json:"url"`
 			}{
-				Url: pi.NextAction.AlipayHandleRedirect.URL,
+				Url: pi.NextAction.RedirectToURL.URL, // AlipayHandleRedirect
 			}
 		} else {
 			data = struct {
